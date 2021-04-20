@@ -1,10 +1,11 @@
 package org.unibl.etf.pisio.am.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.unibl.etf.pisio.am.models.entities.AssetEntity;
-import org.unibl.etf.pisio.am.repositories.AssetEntityRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.pisio.am.exceptions.NotFoundException;
+import org.unibl.etf.pisio.am.models.Asset;
+import org.unibl.etf.pisio.am.models.AssetRequest;
+import org.unibl.etf.pisio.am.services.AssetService;
 
 import java.util.List;
 
@@ -12,14 +13,36 @@ import java.util.List;
 @RequestMapping("/assets")
 public class AssetController {
 
-    private final AssetEntityRepository repository;
+    private final AssetService assetService;
 
-    public AssetController(AssetEntityRepository repository) {
-        this.repository = repository;
+    public AssetController(AssetService assetService) {
+        this.assetService = assetService;
     }
 
+
     @GetMapping
-    List<AssetEntity> findAll(){
-        return repository.findAll();
+    List<Asset> findAll() {
+        return assetService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Asset findById(@PathVariable Integer id) throws NotFoundException {
+        return assetService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        assetService.delete(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Asset insert(@RequestBody AssetRequest assetRequest) throws NotFoundException {
+        return assetService.insert(assetRequest);
+    }
+
+    @PutMapping("/{id}")
+    public Asset update(@PathVariable Integer id, @RequestBody AssetRequest assetRequest) throws NotFoundException {
+        return assetService.update(id, assetRequest);
     }
 }
