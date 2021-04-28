@@ -1,13 +1,14 @@
 package org.unibl.etf.pisio.am.models.entities;
 
 import lombok.Data;
+import org.unibl.etf.pisio.am.base.BaseEntity;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "asset")
-public class AssetEntity {
+public class AssetEntity implements BaseEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

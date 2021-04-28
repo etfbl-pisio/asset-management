@@ -22,12 +22,12 @@ public class AssetController {
 
     @GetMapping
     List<Asset> findAll() {
-        return assetService.findAll();
+        return assetService.findAll(Asset.class);
     }
 
     @GetMapping("/{id}")
     public Asset findById(@PathVariable Integer id) throws NotFoundException {
-        return assetService.findById(id);
+        return assetService.findById(id,Asset.class);
     }
 
     @DeleteMapping("/{id}")
@@ -38,11 +38,11 @@ public class AssetController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Asset insert(@RequestBody AssetRequest assetRequest) throws NotFoundException {
-        return assetService.insert(assetRequest);
+        return assetService.insert(assetRequest, Asset.class);
     }
 
     @PutMapping("/{id}")
     public Asset update(@PathVariable Integer id, @RequestBody AssetRequest assetRequest) throws NotFoundException {
-        return assetService.update(id, assetRequest);
+        return assetService.update(id, assetRequest, Asset.class);
     }
 }

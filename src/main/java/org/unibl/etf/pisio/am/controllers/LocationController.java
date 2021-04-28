@@ -1,16 +1,12 @@
 package org.unibl.etf.pisio.am.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.pisio.am.exceptions.NotFoundException;
 import org.unibl.etf.pisio.am.models.Asset;
 import org.unibl.etf.pisio.am.models.Location;
+import org.unibl.etf.pisio.am.models.LocationRequest;
 import org.unibl.etf.pisio.am.models.SingleLocation;
-import org.unibl.etf.pisio.am.models.entities.LocationEntity;
-import org.unibl.etf.pisio.am.repositories.LocationEntityRepository;
 import org.unibl.etf.pisio.am.services.AssetService;
 import org.unibl.etf.pisio.am.services.LocationService;
 
@@ -30,18 +26,35 @@ public class LocationController {
     }
 
     @GetMapping
-    public List<Location> findAll(){
-        return locationService.findAll();
+    public List<Location> findAll() {
+        return locationService.findAll(Location.class);
     }
 
     @GetMapping("/{id}")
     public SingleLocation findById(@PathVariable Integer id) throws NotFoundException {
-        return locationService.findById(id);
+        return locationService.findById(id, SingleLocation.class);
     }
 
     @GetMapping("/{id}/assets")
-    public List<Asset> getAllAssetsByLocationId(@PathVariable Integer id ){
+    public List<Asset> getAllAssetsByLocationId(@PathVariable Integer id) {
         return assetService.getAllAssetsByLocationId(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SingleLocation insert(@RequestBody LocationRequest location) throws NotFoundException {
+        return assetService.insert(location, SingleLocation.class);
+    }
+
+    @PutMapping("/{id}")
+    public SingleLocation update(@PathVariable Integer id, @RequestBody LocationRequest location) throws NotFoundException {
+        return locationService.update(id, location, SingleLocation.class);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        locationService.delete(id);
+    }
+
 
 }
