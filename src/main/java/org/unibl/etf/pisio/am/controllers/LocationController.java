@@ -1,5 +1,8 @@
 package org.unibl.etf.pisio.am.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.pisio.am.exceptions.NotFoundException;
@@ -36,7 +39,8 @@ public class LocationController {
     }
 
     @GetMapping("/{id}/assets")
-    public List<Asset> getAllAssetsByLocationId(@PathVariable Integer id) {
+    @ApiOperation(value = "Returns all assets related to supplied location")
+    public List<Asset> getAllAssetsByLocationId(@ApiParam(value = "Location ID",required = true) @PathVariable Integer id) {
         return assetService.getAllAssetsByLocationId(id);
     }
 
