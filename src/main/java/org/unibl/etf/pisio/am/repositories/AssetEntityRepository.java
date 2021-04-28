@@ -11,5 +11,5 @@ public interface AssetEntityRepository extends JpaRepository<AssetEntity, Intege
     List<AssetEntity> getAllByLocation_Id(Integer id);
 
     @Query("SELECT new org.unibl.etf.pisio.am.models.AssetNameType(a.name,a.assetType.name) from AssetEntity a")
-   List<AssetNameType> getAllNameTypes();
+    List<AssetNameType> getAllNameTypes();
 }
