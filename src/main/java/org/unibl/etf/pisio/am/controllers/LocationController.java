@@ -47,7 +47,7 @@ public class LocationController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SingleLocation insert(@RequestBody LocationRequest location) throws NotFoundException {
-        return assetService.insert(location, SingleLocation.class);
+        return locationService.insert(location, SingleLocation.class);
     }
 
     @PutMapping("/{id}")
