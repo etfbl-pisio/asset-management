@@ -12,4 +12,8 @@ public interface AssetEntityRepository extends JpaRepository<AssetEntity, Intege
 
     @Query("SELECT new org.unibl.etf.pisio.am.models.AssetNameType(a.name,a.assetType.name) from AssetEntity a")
     List<AssetNameType> getAllNameTypes();
+
+    Boolean existsByIdentifier(String identifier);
+    Boolean existsByIdentifierAndIdNot(String identifier,Integer id);
+
 }

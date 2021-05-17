@@ -3,6 +3,7 @@ package org.unibl.etf.pisio.am.services.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.pisio.am.base.CrudJpaService;
+import org.unibl.etf.pisio.am.exceptions.ConflictException;
 import org.unibl.etf.pisio.am.models.Asset;
 import org.unibl.etf.pisio.am.models.entities.AssetEntity;
 import org.unibl.etf.pisio.am.repositories.AssetEntityRepository;
@@ -22,6 +23,20 @@ public class AssetServiceImpl extends CrudJpaService<AssetEntity, Integer> imple
         super(repository, modelMapper, AssetEntity.class);
         this.modelMapper = modelMapper;
         this.repository = repository;
+    }
+
+    @Override
+    public <T, U> T insert(U object, Class<T> resultDtoClass) {
+        if (repository.existsByIdentifier(getModelMapper().map(object, getEntityClass()).getIdentifier()))
+            throw new ConflictException();
+        return super.insert(object, resultDtoClass);
+    }
+
+    @Override
+    public <T, U> T update(Integer integer, U object, Class<T> resultDtoClass) {
+        if (repository.existsByIdentifierAndIdNot(getModelMapper().map(object, getEntityClass()).getIdentifier(), integer))
+            throw new ConflictException();
+        return super.update(integer, object, resultDtoClass);
     }
 
     @Override
