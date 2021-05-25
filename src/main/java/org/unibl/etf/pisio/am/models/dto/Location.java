@@ -1,12 +1,13 @@
-package org.unibl.etf.pisio.am.models;
+package org.unibl.etf.pisio.am.models.dto;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class LocationRequest {
+public class Location {
 
+    private Integer id;
 
     private String name;
 

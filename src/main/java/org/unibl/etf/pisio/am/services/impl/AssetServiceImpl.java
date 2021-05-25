@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.pisio.am.base.CrudJpaService;
 import org.unibl.etf.pisio.am.exceptions.ConflictException;
-import org.unibl.etf.pisio.am.models.Asset;
+import org.unibl.etf.pisio.am.models.dto.Asset;
 import org.unibl.etf.pisio.am.models.entities.AssetEntity;
 import org.unibl.etf.pisio.am.repositories.AssetEntityRepository;
 import org.unibl.etf.pisio.am.services.AssetService;

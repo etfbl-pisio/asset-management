@@ -2,17 +2,17 @@ package org.unibl.etf.pisio.am.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.pisio.am.exceptions.NotFoundException;
-import org.unibl.etf.pisio.am.models.Asset;
-import org.unibl.etf.pisio.am.models.Location;
-import org.unibl.etf.pisio.am.models.LocationRequest;
-import org.unibl.etf.pisio.am.models.SingleLocation;
+import org.unibl.etf.pisio.am.models.dto.Asset;
+import org.unibl.etf.pisio.am.models.dto.Location;
+import org.unibl.etf.pisio.am.models.dto.SingleLocation;
+import org.unibl.etf.pisio.am.models.requests.LocationRequest;
 import org.unibl.etf.pisio.am.services.AssetService;
 import org.unibl.etf.pisio.am.services.LocationService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,18 +40,18 @@ public class LocationController {
 
     @GetMapping("/{id}/assets")
     @ApiOperation(value = "Returns all assets related to supplied location")
-    public List<Asset> getAllAssetsByLocationId(@ApiParam(value = "Location ID",required = true) @PathVariable Integer id) {
+    public List<Asset> getAllAssetsByLocationId(@ApiParam(value = "Location ID", required = true) @PathVariable Integer id) {
         return assetService.getAllAssetsByLocationId(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SingleLocation insert(@RequestBody LocationRequest location) throws NotFoundException {
+    public SingleLocation insert(@RequestBody @Valid LocationRequest location) throws NotFoundException {
         return locationService.insert(location, SingleLocation.class);
     }
 
     @PutMapping("/{id}")
-    public SingleLocation update(@PathVariable Integer id, @RequestBody LocationRequest location) throws NotFoundException {
+    public SingleLocation update(@PathVariable Integer id, @RequestBody @Valid LocationRequest location) throws NotFoundException {
         return locationService.update(id, location, SingleLocation.class);
     }
 

@@ -1,4 +1,4 @@
-package org.unibl.etf.pisio.am.models;
+package org.unibl.etf.pisio.am.models.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

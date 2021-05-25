@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -13,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 
 @SpringBootApplication
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AmApplication {
 
     public static void main(String[] args) {
@@ -20,11 +22,12 @@ public class AmApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper(){
-        ModelMapper mapper=new ModelMapper();
+    public ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setAmbiguityIgnored(true);
         return mapper;
     }
+
 
     @Bean
     public Docket api() {
@@ -34,6 +37,7 @@ public class AmApplication {
                 .paths(PathSelectors.any())
                 .build().apiInfo(getApiInfo());
     }
+
     private ApiInfo getApiInfo() {
         return new ApiInfo("Asset Management", "Description of our application", "1.0.0", "", null, "", "", new ArrayList<>());
     }

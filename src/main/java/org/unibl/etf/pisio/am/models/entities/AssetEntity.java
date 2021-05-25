@@ -1,13 +1,20 @@
 package org.unibl.etf.pisio.am.models.entities;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.unibl.etf.pisio.am.base.BaseEntity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "asset")
+@EntityListeners(AuditingEntityListener.class)
 public class AssetEntity implements BaseEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +38,19 @@ public class AssetEntity implements BaseEntity<Integer> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_status_id", referencedColumnName = "id", nullable = false)
     private AssetStatusEntity assetStatus;
+    @Column(name = "created_at", updatable = false)
+    @CreatedDate
+    private Date createdAt;
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private Date modifiedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @CreatedBy
+    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
+    private UserEntity createdBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @LastModifiedBy
+    @JoinColumn(name = "updated_by", referencedColumnName = "id")
+    private UserEntity updatedBy;
 
 }

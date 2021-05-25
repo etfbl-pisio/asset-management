@@ -25,58 +25,62 @@ CREATE TABLE IF NOT EXISTS `asset` (
   `location_id` int(11) NOT NULL,
   `asset_type_id` int(11) NOT NULL,
   `asset_status_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `identifier` (`identifier`),
   KEY `FK_asset_location` (`location_id`),
   KEY `FK_asset_asset_type` (`asset_type_id`),
   KEY `FK_asset_asset_status` (`asset_status_id`),
+  KEY `FK_asset_user` (`created_by`),
+  KEY `FK_asset_user_2` (`updated_by`),
   CONSTRAINT `FK_asset_asset_status` FOREIGN KEY (`asset_status_id`) REFERENCES `asset_status` (`id`),
   CONSTRAINT `FK_asset_asset_type` FOREIGN KEY (`asset_type_id`) REFERENCES `asset_type` (`id`),
-  CONSTRAINT `FK_asset_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_asset_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`),
+  CONSTRAINT `FK_asset_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_asset_user_2` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table asset_management.asset: ~0 rows (approximately)
-DELETE FROM `asset`;
-/*!40000 ALTER TABLE `asset` DISABLE KEYS */;
-INSERT INTO `asset` (`id`, `identifier`, `name`, `description`, `location_id`, `asset_type_id`, `asset_status_id`) VALUES
-	(1, 'A01A', 'Dell XPS', NULL, 2, 1, 1),
-	(2, 'B21A', 'Stolica Model 21A', 'Dimenzije 40x50', 1, 2, 2);
-/*!40000 ALTER TABLE `asset` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 -- Dumping structure for table asset_management.asset_status
 CREATE TABLE IF NOT EXISTS `asset_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `name` (`name`),
+  KEY `FK_asset_status_user` (`created_by`),
+  KEY `FK_asset_status_user_2` (`updated_by`),
+  CONSTRAINT `FK_asset_status_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_asset_status_user_2` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table asset_management.asset_status: ~0 rows (approximately)
-DELETE FROM `asset_status`;
-/*!40000 ALTER TABLE `asset_status` DISABLE KEYS */;
-INSERT INTO `asset_status` (`id`, `name`) VALUES
-	(1, 'Ispravan'),
-	(2, 'Na popravci'),
-	(3, 'Neispravan'),
-	(4, 'Otpisan');
-/*!40000 ALTER TABLE `asset_status` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 -- Dumping structure for table asset_management.asset_type
 CREATE TABLE IF NOT EXISTS `asset_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(120) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` mediumtext,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `name` (`name`),
+  KEY `FK_asset_type_user` (`updated_by`),
+  KEY `FK_asset_type_user_2` (`created_by`),
+  CONSTRAINT `FK_asset_type_user` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_asset_type_user_2` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Dumping data for table asset_management.asset_type: ~0 rows (approximately)
-DELETE FROM `asset_type`;
-/*!40000 ALTER TABLE `asset_type` DISABLE KEYS */;
-INSERT INTO `asset_type` (`id`, `name`, `description`) VALUES
-	(1, 'Računar', NULL),
-	(2, 'Stolica', 'Drvena, na preklapanje');
-/*!40000 ALTER TABLE `asset_type` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 -- Dumping structure for table asset_management.location
 CREATE TABLE IF NOT EXISTS `location` (
@@ -85,16 +89,39 @@ CREATE TABLE IF NOT EXISTS `location` (
   `description` mediumtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `latitude` decimal(8,6) NOT NULL,
   `longitude` decimal(9,6) NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_location_user` (`created_by`),
+  KEY `FK_location_user_2` (`updated_by`),
+  CONSTRAINT `FK_location_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_location_user_2` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table asset_management.location: ~0 rows (approximately)
-DELETE FROM `location`;
-/*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` (`id`, `name`, `description`, `latitude`, `longitude`) VALUES
-	(1, 'Glavno Skladište Banja Luka', NULL, 10.000000, 23.000000),
-	(2, 'Uprava Banja Luka', 'Pored ETF-a', 10.345100, 10.312330);
-/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+-- Data exporting was unselected.
+
+-- Dumping structure for table asset_management.user
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_email_uindex` (`username`),
+  KEY `FK_user_user` (`updated_by`),
+  CONSTRAINT `FK_user_user` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

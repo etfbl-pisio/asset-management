@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.pisio.am.exceptions.NotFoundException;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,12 +37,12 @@ public abstract class CrudController<ID extends Serializable, REQ, RESP> {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RESP insert(@RequestBody REQ object) throws NotFoundException {
+    public RESP insert(@RequestBody @Valid REQ object) throws NotFoundException {
         return crudService.insert(object, respClass);
     }
 
     @PutMapping("/{id}")
-    public RESP update(@PathVariable ID id, @RequestBody REQ object) throws NotFoundException {
+    public RESP update(@PathVariable ID id, @RequestBody @Valid REQ object) throws NotFoundException {
         return crudService.update(id, object, respClass);
     }
 }

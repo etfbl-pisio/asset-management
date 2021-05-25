@@ -1,7 +1,6 @@
 package org.unibl.etf.pisio.am.services.impl;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.pisio.am.base.CrudJpaService;
 import org.unibl.etf.pisio.am.exceptions.ConflictException;
@@ -19,7 +18,7 @@ public class AssetTypeServiceImpl extends CrudJpaService<AssetTypeEntity, Intege
 
     public AssetTypeServiceImpl(AssetTypeEntityRepository repository, ModelMapper modelMapper) {
         super(repository, modelMapper, AssetTypeEntity.class);
-        this.repository=repository;
+        this.repository = repository;
     }
 
     @Override

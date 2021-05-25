@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.pisio.am.exceptions.NotFoundException;
-import org.unibl.etf.pisio.am.models.Asset;
-import org.unibl.etf.pisio.am.models.AssetRequest;
+import org.unibl.etf.pisio.am.models.dto.Asset;
+import org.unibl.etf.pisio.am.models.requests.AssetRequest;
 import org.unibl.etf.pisio.am.services.AssetService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/assets")
@@ -37,12 +39,12 @@ public class AssetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Asset insert(@RequestBody AssetRequest assetRequest) throws NotFoundException {
+    public Asset insert(@RequestBody @Valid AssetRequest assetRequest) throws NotFoundException {
         return assetService.insert(assetRequest, Asset.class);
     }
 
     @PutMapping("/{id}")
-    public Asset update(@PathVariable Integer id, @RequestBody AssetRequest assetRequest) throws NotFoundException {
+    public Asset update(@PathVariable Integer id, @Valid @RequestBody AssetRequest assetRequest) throws NotFoundException {
         return assetService.update(id, assetRequest, Asset.class);
     }
 }
