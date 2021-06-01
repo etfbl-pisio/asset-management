@@ -2,6 +2,11 @@
   "rules": [
     {
       "methods": ["GET"],
+      "pattern": "/state",
+      "roles": ["ADMIN","USER"]
+    },
+    {
+      "methods": ["GET"],
       "pattern": "/asset-types",
       "roles": [
         "ADMIN","USER"

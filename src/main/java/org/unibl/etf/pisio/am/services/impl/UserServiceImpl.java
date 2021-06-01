@@ -77,7 +77,7 @@ public class UserServiceImpl extends CrudJpaService<UserEntity, Integer> impleme
             throw new ConflictException();
         UserEntity entity = findEntityById(id);
         entity.setUsername(user.getUsername());
-        entity.setFirstName(user.getLastName());
+        entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
         return update(id, entity, User.class);

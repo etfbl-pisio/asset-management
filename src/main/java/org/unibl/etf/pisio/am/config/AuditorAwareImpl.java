@@ -20,7 +20,7 @@ public class AuditorAwareImpl implements AuditorAware<UserEntity> {
     @Override
     public Optional<UserEntity> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
+        if (authentication instanceof JwtUser) {
             JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
             return Optional.of(userService.findById(jwtUser.getId(), UserEntity.class));
         }
