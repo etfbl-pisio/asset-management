@@ -1,7 +1,10 @@
 package org.unibl.etf.pisio.am.services.impl;
 
+import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.pisio.am.base.CrudJpaService;
@@ -29,6 +32,9 @@ public class UserServiceImpl extends CrudJpaService<UserEntity, Integer> impleme
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JmsTemplate jmsTemplate;
+    @Value("${mq.topic}")
+    private String topicName;
     @Value("${authorization.default.username:}")
     private String defaultUsername;
     @Value("${authorization.default.first-name:}")
@@ -39,12 +45,15 @@ public class UserServiceImpl extends CrudJpaService<UserEntity, Integer> impleme
     private String defaultPassword;
     @Value("${authorization.default.email:}")
     private String defaultEmail;
+    @Value("${mq.queue}")
+    private String queueName;
 
 
-    public UserServiceImpl(UserEntityRepository repository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserEntityRepository repository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, JmsTemplate jmsTemplate) {
         super(repository, modelMapper, UserEntity.class);
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @PostConstruct
@@ -69,7 +78,9 @@ public class UserServiceImpl extends CrudJpaService<UserEntity, Integer> impleme
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         entity.setStatus(UserEntity.Status.REQUESTED);
         entity.setRole(Role.USER);
-        insert(entity, UserEntity.class);
+        User user = insert(entity, User.class);
+        jmsTemplate.convertAndSend(new ActiveMQQueue(queueName), user);
+        jmsTemplate.convertAndSend(new ActiveMQTopic(topicName), user);
     }
 
     public User update(Integer id, UserUpdateRequest user) {
